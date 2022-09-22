@@ -21,7 +21,7 @@ app.get("/", (request, response) => {
 // se eu fizesse só isso não acontece nada
 // pra isso a gente precisa um listener
 
-app.listen(3000, (err) => {
+app.listen(2800, (err) => {
 	if (err) {
 		console.log("não foi possível iniciar o servidor do jobify");
 	} else {
