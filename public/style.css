@@ -1,0 +1,29 @@
+* {
+	font-family: "Roboto", sans-serif;
+}
+
+h1 {
+	text-align: center;
+}
+
+p {
+	text-align: center;
+}
+
+ul {
+	list-style: none;
+	margin-left: 10px;
+	padding-left: 1px;
+}
+li {
+	margin: 0;
+}
+h2 {
+	background-color: #c4c4c4;
+	padding: 8px;
+	font-size: 24px;
+}
+
+h3 {
+	font-size: 24px;
+}
