@@ -48,9 +48,9 @@ app.get("/vaga", (request, response) => {
 // no caso dos SQL a linguagem é = SQL
 async function init(){
     const db = await openDB();
-    await db.run(
-		"create table if not exists categorias (id INTEGER PRIMARY KEY, caregoria TEXT);"
-	);
+    await db.run('create table if not exists categorias(id INTEGER PRIMARY KEY, categoria TEXT);')
+	const categorias = "Engineering team"
+	await db.run(`insert into categorias(categoria) values('${categorias}')`)
 }
 
 init();
