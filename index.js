@@ -29,15 +29,20 @@ app.set("view engine", "ejs"); //eu quero deixar o js limpo, chamar o html separ
 //enviamos ele para o public, como?
 app.use(express.static("public")); //aqui eu falo, olha se tu não achar o barra, vai pro diretorio "public"
 
-app.get("/", (request, response) => {
+app.get("/", async (request, response) => {
 	//se vc pegar '/' do website
 	//como funciona isso? quando o express recebe o request em barra via GET
 	// como eu quero develver a informação para o browser
 	// eu erspondo com uma mensagem
 	// console.log(new Date)
 
+	const db = await openDB()
+	const categorias = await db.all('select * from categorias;')
+
 	// aqui é o EJS funcionando, ele vai chamar o home.ejs e depois eu posso mandar valores
-	response.render("home", {});
+	response.render("home", {
+		categorias // é um objeto, seria o equivalente a estar escrito categorias: categorias,
+	});
 });
 app.get("/vaga", (request, response) => {
 	response.render("vaga", {});
@@ -48,9 +53,9 @@ app.get("/vaga", (request, response) => {
 // no caso dos SQL a linguagem é = SQL
 async function init(){
     const db = await openDB();
-    await db.run(
-		"create table if not exists categorias (id INTEGER PRIMARY KEY, caregoria TEXT);"
-	);
+    await db.run('create table if not exists categorias(id INTEGER PRIMARY KEY, categoria TEXT);')
+	//const categorias = "Marketing team"
+	//await db.run(`insert into categorias(categoria) values('${categorias}')`)
 }
 
 init();
