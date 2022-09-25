@@ -54,8 +54,12 @@ app.get("/vaga", (request, response) => {
 async function init(){
     const db = await openDB();
     await db.run('create table if not exists categorias(id INTEGER PRIMARY KEY, categoria TEXT);')
-	//const categorias = "Marketing team"
+    await db.run('create table if not exists vagas(id INTEGER PRIMARY KEY, categoria INTEGER, titulo TEXT, descricao TEXT);')
+	//const categorias = "Developer team"
 	//await db.run(`insert into categorias(categoria) values('${categorias}')`)
+	const vaga = "FullStack Developer"
+	const descricao = 'Vaga para FullStackDeveloper que fez o fullstack lab'
+	await db.run(`insert into vagas(categoria, titulo, descricao) values(1, '${vaga}', '${descricao}')`)
 }
 
 init();
