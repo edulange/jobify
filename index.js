@@ -37,14 +37,25 @@ app.get("/", async (request, response) => {
 	// console.log(new Date)
 
 	const db = await openDB()
-	const categorias = await db.all('select * from categorias;')
-
+	const categoriasDb = await db.all('select * from categorias;') // para criar categorias // chamamos categoriasDb pq veio do banco
+	const vagas = await db.all('select * from vagas; ')
+	const categorias = categoriasDb.map(cat => {
+		return {
+			...cat, // "..." = spread operator
+			vagas:vagas.filter( vaga => vaga.categoria === cat.id )
+		}
+	})
+	
 	// aqui é o EJS funcionando, ele vai chamar o home.ejs e depois eu posso mandar valores
 	response.render("home", {
 		categorias // é um objeto, seria o equivalente a estar escrito categorias: categorias,
 	});
 });
-app.get("/vaga", (request, response) => {
+app.get("/vaga/:id", async (request, response) => {
+	const db = await openDB()
+	const vaga = await db.get('select * from vagas where id = ' + request.params.id)
+	console.log(vaga)
+	console.log(request.params)
 	response.render("vaga", {});
 });
 
@@ -53,13 +64,13 @@ app.get("/vaga", (request, response) => {
 // no caso dos SQL a linguagem é = SQL
 async function init(){
     const db = await openDB();
-    await db.run('create table if not exists categorias(id INTEGER PRIMARY KEY, categoria TEXT);')
+    await db.run('create table if not exists categoria(id INTEGER PRIMARY KEY, categoria TEXT);')
     await db.run('create table if not exists vagas(id INTEGER PRIMARY KEY, categoria INTEGER, titulo TEXT, descricao TEXT);')
-	//const categorias = "Developer team"
+	//const categorias = "Séloco team"
 	//await db.run(`insert into categorias(categoria) values('${categorias}')`)
-	const vaga = "FullStack Developer"
-	const descricao = 'Vaga para FullStackDeveloper que fez o fullstack lab'
-	await db.run(`insert into vagas(categoria, titulo, descricao) values(1, '${vaga}', '${descricao}')`)
+	//const vaga = "Testando UmDois"
+	//const descricao = 'Vaga para FullStackDeveloper que fez o fullstack lab'
+	//await db.run(`insert into vagas(categoria, titulo, descricao) values(1, '${vaga}', '${descricao}')`)
 }
 
 init();
