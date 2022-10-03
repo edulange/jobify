@@ -4,7 +4,7 @@
 	<a href="/admin/vagas">Vagas</a>
 </h2>
 <div>
-    <form action="">
+    <form method="POST">
         <label>Título da Vaga:</label>
         <input type="text" name="titulo">
         <br>
@@ -13,8 +13,8 @@
         <br>
         <label>Categoria:</label>
         <select name="categoria">
-            <option>Engenharia</option>
-            <option>Marketing</option>
+            <option value="1">Engenharia</option>
+            <option value="2">Marketing</option>
         </select>
         <br>
         <button>Salvar Vaga</button>

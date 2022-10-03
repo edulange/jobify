@@ -3,6 +3,9 @@ const express = require("express");
 const app = express(); //chamando o express como função
 // criei uma nova aplicação pra mim
 
+const bodyParser = require('body-parser')
+
+
 const sqlite = require("sqlite"); //chamando o banco de dados
 
 //---------resolvendo essa merda do sqlite3 com a versão 4
@@ -15,11 +18,13 @@ async function openDB() {
 		driver: sqlite3.Database,
 	});
 }
+//===============================
 
 /* const sqlite = require("sqlite"); //chamando o banco de dados
 //geralmente o banco de dados roda em outro PC, pra isso teria que criar uma conexão entre os 2.
 const dbConnection = sqlite.open("banco.sqlite ", { Promise });
 */
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.set("view engine", "ejs"); //eu quero deixar o js limpo, chamar o html separadamente
 // com esse app.set o express vai procurar algo no meu diretório (pastas)
@@ -74,12 +79,19 @@ app.get("/admin/vagas", async (req, res) => {
 });
 app.get("/admin/vagas/delete/:id", async(req, res) => {
 	const db = await openDB()
-	await db.run('delete from vagas where id = ' +req.params.id) //limitamos para 1 por questões de segurança
+	await db.run('delete from vagas where id = ' +  req.params.id) //limitamos para 1 por questões de segurança
 	res.redirect('/admin/vagas') //se eu apaguei a vaga ela já foi resolvida, então eu posso pedir para o express redirecionar essa requisição para outro luga
 })
 app.get("/admin/vagas/nova", async (req, res) => {
 	const db = await openDB()
 	res.render('admin/nova-vaga')
+})
+app.post('/admin/vagas/nova', async (req, res) => { //"post clicar em salvar"
+	const db = await openDB()
+	const { titulo, descricao, categoria } = req.body
+ 
+	await db.run(`insert into vagas(categoria, titulo, descricao) values('${categoria}', '${titulo}', '${descricao}')`);
+	res.redirect('/admin/vagas') //eu vou deolver pra tela só os dados que vierem via formulário
 })
 
 // sempre que estiver trabalhando com banco de dados precisamos trabalhar com operações assíncronas
@@ -95,9 +107,6 @@ async function init() {
 	);
 	//const categorias = "Séloco team"
 	//await db.run(`insert into categorias(categoria) values('${categorias}')`)
-	//const vaga = "Acho que foi agora";
-	//const descricao = "Vaga para FullStackDeveloper que fez o fullstack lab";
-	//await db.run(`insert into vagas(categoria, titulo, descricao) values(2, '${vaga}', '${descricao}')`);
 }
 
 init();
