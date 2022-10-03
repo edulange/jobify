@@ -13,8 +13,10 @@
         <br>
         <label>Categoria:</label>
         <select name="categoria">
-            <option value="1">Engenharia</option>
-            <option value="2">Marketing</option>
+            <% categorias.forEach( categoria => { %>
+            <option value="<%= categoria.id %>"><%= categoria.categoria %></option>
+  
+            <% }) %>
         </select>
         <br>
         <button>Salvar Vaga</button>

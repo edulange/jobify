@@ -84,7 +84,8 @@ app.get("/admin/vagas/delete/:id", async(req, res) => {
 })
 app.get("/admin/vagas/nova", async (req, res) => {
 	const db = await openDB()
-	res.render('admin/nova-vaga')
+	const categorias = await db.all('select * from categorias') 
+	res.render('admin/nova-vaga', { categorias })
 })
 app.post('/admin/vagas/nova', async (req, res) => { //"post clicar em salvar"
 	const db = await openDB()
