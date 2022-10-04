@@ -37,7 +37,7 @@ app.set("view engine", "ejs"); //eu quero deixar o js limpo, chamar o html separ
 
 //caso ele bata no "/" do get e não ache nada o que fazemos?
 //enviamos ele para o public, como?
-app.use(express.static("public")); //aqui eu falo, olha se tu não achar o barra, vai pro diretorio "public"
+app.use(express.static(path.join(__dirname, 'public'))); //aqui eu falo, olha se tu não achar o barra, vai pro diretorio "public"
 
 app.get("/", async (request, response) => {
 	//se vc pegar '/' do website
