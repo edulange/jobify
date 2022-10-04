@@ -86,12 +86,27 @@ app.get("/admin/vagas/nova", async (req, res) => {
 	const db = await openDB()
 	const categorias = await db.all('select * from categorias') 
 	res.render('admin/nova-vaga', { categorias })
-})
+})	
 app.post('/admin/vagas/nova', async (req, res) => { //"post clicar em salvar"
 	const db = await openDB()
 	const { titulo, descricao, categoria } = req.body
  
 	await db.run(`insert into vagas(categoria, titulo, descricao) values('${categoria}', '${titulo}', '${descricao}')`);
+	res.redirect('/admin/vagas') //eu vou deolver pra tela só os dados que vierem via formulário
+})
+
+app.get("/admin/vagas/editar/:id", async (req, res) => {
+	const db = await openDB()
+	const categorias = await db.all('select * from categorias') 
+	const vaga = await db.get('select * from vagas where id = '+ req.params.id) // isso é pra eu deixar as informações que constavam antes de eu querer editar
+	res.render('admin/editar-vaga', { categorias, vaga })
+})	
+app.post('/admin/vagas/editar/:id', async (req, res) => { //"post clicar em salvar"
+	const db = await openDB()
+	const { titulo, descricao, categoria } = req.body
+	const { id } = req.params
+ 
+	await db.run(`update vagas set categoria = '${categoria}', titulo = '${titulo}', descricao = '${descricao}' where id = ${id}`);
 	res.redirect('/admin/vagas') //eu vou deolver pra tela só os dados que vierem via formulário
 })
 
