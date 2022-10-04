@@ -5,6 +5,8 @@ const app = express(); //chamando o express como função
 
 const bodyParser = require('body-parser')
 
+const port = process.env.PORT || 3000  //o port vai ser process.env.PORT OUU 3000
+
 
 const sqlite = require("sqlite"); //chamando o banco de dados
 
@@ -139,7 +141,7 @@ init();
 */
 // só que eu ainda preciso: "falar pra minha máquina quando ele pegar a / eu vou responder"
 // para fazer isso, usamos o listen
-app.listen(3000, (err) => {
+app.listen(port, (err) => {
 	//a função vai retornar um erro se não conseguir abrir a porta
 	if (err) {
 		console.log("não foi possível iniciar o servidor");
