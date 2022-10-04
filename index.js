@@ -5,6 +5,7 @@ const app = express(); //chamando o express como função
 
 const bodyParser = require('body-parser')
 
+const path = require('path')
 const port = process.env.PORT || 3000  //o port vai ser process.env.PORT OUU 3000
 
 
@@ -20,6 +21,8 @@ async function openDB() {
 		driver: sqlite3.Database,
 	});
 }
+
+app.set('views', path.join(__dirname, 'views'))
 //===============================
 
 /* const sqlite = require("sqlite"); //chamando o banco de dados
